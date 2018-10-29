@@ -1,0 +1,55 @@
+REKOGNITION
+(upload images to your S3 bucket)
+aws rekognition detect-labels --region us-east-1 --image "S3Object={Bucket=<your bucket>,Name=<your image key>}"
+
+POLLY
+aws polly synthesize-speech --output-format mp3 --voice-id Joanna --text 'It is a God-awful small affair, To the girl with the mousy hair, But her mummy is yelling no, And her daddy has told her to go' sampleEnglish.mpg
+aws polly synthesize-speech --output-format mp3 --voice-id Conchita --text 'Hola, ¡bienvenidos al evento, que lo disfruten!' sampleSpanish.mpg
+
+LEX
+aws iam create-service-linked-role --aws-service-name lex.amazonaws.com
+aws iam get-role --role-name AWSServiceRoleForLexBots
+aws lex-models put-slot-type --region us-east-1 --name FlowerTypes --cli-input-json file://FlowerTypes.json
+aws lex-models put-intent --region us-east-1 --name OrderFlowers --cli-input-json file://OrderFlowers.json
+aws lex-models put-bot --region us-east-1 --name OrderFlowersBot --cli-input-json file://OrderFlowersBot.json
+aws lex-models get-bot --region us-east-1 --name OrderFlowersBot --version-or-alias "\$LATEST"
+
+text
+aws lex-runtime post-text --region us-east-1 --bot-name OrderFlowersBot --bot-alias "\$LATEST" --user-id UserOne --input-text "i would like to order flowers"
+aws lex-runtime post-text --region us-east-1 --bot-name OrderFlowersBot --bot-alias "\$LATEST" --user-id UserOne --input-text "roses"
+aws lex-runtime post-text --region us-east-1 --bot-name OrderFlowersBot --bot-alias "\$LATEST" --user-id UserOne --input-text "tuesday"
+aws lex-runtime post-text --region us-east-1 --bot-name OrderFlowersBot --bot-alias "\$LATEST" --user-id UserOne --input-text "10:00 a.m."
+aws lex-runtime post-text --region us-east-1 --bot-name OrderFlowersBot --bot-alias "\$LATEST" --user-id UserOne --input-text "yes"
+
+audio
+aws polly synthesize-speech --region us-east-1 --output-format mp3 --text "i would like to order flowers" --voice-id "Kendra" IntentSpeech.mpg
+aws lex-runtime post-content --region us-east-1 --bot-name OrderFlowersBot --bot-alias "\$LATEST" --user-id UserOne --content-type "audio/l16; rate=16000; channels=1" --input-stream IntentSpeech.mpg IntentOutputSpeech.mpg
+aws polly synthesize-speech --region us-east-1 --output-format mp3 --text "roses" --voice-id "Kendra" FlowerTypeSpeech.mpg
+aws lex-runtime post-content --region us-east-1 --bot-name OrderFlowersBot --bot-alias "\$LATEST" --user-id UserOne --content-type "audio/l16; rate=16000; channels=1" --input-stream FlowerTypeSpeech.mpg FlowerTypeOutputSpeech.mpg
+aws polly synthesize-speech --region us-east-1 --output-format mp3 --text "10:00 a.m." --voice-id "Kendra" TimeSpeech.mpg
+aws lex-runtime post-content --region us-east-1 --bot-name OrderFlowersBot --bot-alias "\$LATEST" --user-id UserOne --content-type "audio/l16; rate=16000; channels=1" --input-stream TimeSpeech.mpg TimeOutputSpeech.mpg
+aws polly synthesize-speech --region us-east-1 --output-format mp3 --text "yes" --voice-id "Kendra" ConfirmSpeech.mpg
+aws lex-runtime post-content --region us-east-1 --bot-name OrderFlowersBot --bot-alias "\$LATEST" --user-id UserOne --content-type "audio/l16; rate=16000; channels=1" --input-stream ConfirmSpeech.mpg ConfirmOutputSpeech.mpg
+
+TRANSCRIBE
+aws transcribe start-transcription-job --region us-east-1 --cli-input-json file://transcribeJob.json
+aws transcribe get-transcription-job --region us-east-1 --transcription-job-name "sampleJob"
+aws transcribe delete-transcription-job --region us-east-1 --transcription-job-name "sampleJob"
+
+TRANSLATE
+aws translate translate-text --region us-east-1 --source-language-code "en" --target-language-code "es" --text "I can't get no satisfaction"
+
+COMPREHEND
+aws comprehend detect-sentiment --region us-east-1 --language-code "es" --text "Está lloviendo"
+(play around with different expression, such as adding exclamation, positive and negative meaning et al.)
+
+SAGEMAKER
+(create notebook instance, add Bike Rental Forecasting.ipynb)
+aws sagemaker-runtime invoke-endpoint --endpoint-name <your endpoint name> --body "1.3904e+04, 3.0000e+00, 1.0000e+00, 1.0000e+00, 1.0000e+00, 1.3430e-01, 8.6000e+01, 1.9700e+02, 1.0000e+00, 1.0000e+00, 1.0000e+00, 1.0000e+00, 1.0000e+00, 1.0000e+00, 1.0000e+00" --content-type "text/csv" bikePrediction.json
+
+DEEPLENS
+http://deeplens.config (update)
+http://deeplens.amazon.net (fresh install)
+
+DEEPLENS VIDEO
+Devices | Project output | View the video output | Select browser

@@ -1,0 +1,8 @@
+{
+    "TranscriptionJobName": "sampleJobSong002", 
+    "LanguageCode": "en-US", 
+    "MediaFormat": "mp3", 
+    "Media": {
+        "MediaFileUri": "https://s3.amazonaws.com/aksamplepictures/MenOfGoodFortune.mp3"
+    }
+}
