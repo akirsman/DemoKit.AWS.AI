@@ -14,3 +14,5 @@ Only prerequisite is to install aws-cli locally and the run
 ```
 aws configure
 ```
+
+for putting your credentials and preferred region.
