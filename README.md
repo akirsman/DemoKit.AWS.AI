@@ -9,7 +9,7 @@ You may also want to open the presentation, put your name on it and cover it bef
 
 ### Prerequisites
 
-Only prerequisite is to get a AWS Account, install aws-cli locally and the run
+Only prerequisite is to get a AWS Account, install aws-cli locally following instructions at https://docs.aws.amazon.com/cli/latest/userguide/installing.html and the run
 
 ```
 aws configure
